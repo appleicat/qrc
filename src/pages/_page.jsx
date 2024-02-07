@@ -48,7 +48,14 @@ export default function Page() {
         {data && <section ref={ref} className="grid p-[1.5rem]" />}
         {!data && (
           <section className="p-[1.5rem] grid grid-flow-row-dense w-full h-full">
-            <div>QRcode</div>
+            <header className="flex justify-between">
+              <a
+                href="https://github.com/appleicat/qrc"
+                className="px-[0.33rem] aspect-square h-fit underline underline-offset-[0.15rem] transition hover:bg-black hover:text-white"
+              >
+                QRc
+              </a>
+            </header>
             <div className="grid grid-flow-row-dense w-full h-full items-end">
               <div>version</div>
               <div className="grid grid-cols-10 w-full h-full">
