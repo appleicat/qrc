@@ -78,7 +78,7 @@ export default function Page() {
             className="relative h-full w-full flex justify-center items-center p-[1.5rem] overflow-hidden"
           >
             <button
-              className="absolute z-50 h-full w-full transition hover:backdrop-blur hover:backdrop-grayscale"
+              className="absolute z-50 h-full w-full transition hover:backdrop-grayscale"
               onClick={() => setCamera(false)}
             />
             <video ref={cameraRef} className="h-full w-full object-cover" />
@@ -97,12 +97,27 @@ export default function Page() {
               >
                 QRc
               </a>
-              <button
-                className="px-[0.33rem] flex justify-end aspect-square transition hover:bg-black hover:text-white"
-                onClick={() => setCamera(true)}
-              >
-                scan
-              </button>
+              <div className="flex flex-row-reverse">
+                <button
+                  className="px-[0.33rem] flex justify-end aspect-square transition hover:bg-black hover:text-white"
+                  onClick={() => setCamera(true)}
+                >
+                  cam
+                </button>
+                <button
+                  className="px-[0.33rem] flex justify-end aspect-square transition hover:bg-black hover:text-white"
+                  onClick={async () => {
+                    const clipboard = await navigator.clipboard.read();
+                    const image = await clipboard[0].getType('image/png');
+                    const result = await QRscanner.scanImage(image, {
+                      returnDetailedScanResult: true,
+                    });
+                    setData(result.data);
+                  }}
+                >
+                  clip
+                </button>
+              </div>
             </header>
             <div className="grid grid-flow-row-dense w-full h-full items-end">
               <div>version</div>
