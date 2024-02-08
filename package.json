@@ -17,6 +17,7 @@
     "astro": "^4.3.2",
     "framer-motion": "^11.0.3",
     "locomotive-scroll": "beta",
+    "qr-scanner": "^1.4.2",
     "qrcode": "^1.5.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
 import QRcode from 'qrcode';
+import QRscanner from 'qr-scanner';
 
 const Button = ({ children, onClick, isActive }) => {
   return (
@@ -16,11 +17,26 @@ const Button = ({ children, onClick, isActive }) => {
 };
 
 export default function Page() {
-  const ref = useRef();
+  const qrRef = useRef();
+  const cameraRef = useRef();
   const [data, setData] = useState('');
+  const [camera, setCamera] = useState(false);
   const [errorCorrectionLevel, setErrorCorrectionLevel] = useState('L');
   const [maskPattern, setMaskPattern] = useState(undefined);
   const [version, setVersion] = useState(undefined);
+
+  useEffect(() => {
+    if (data) setCamera(false);
+    if (!cameraRef.current) return;
+    const qrScanner = new QRscanner(
+      cameraRef.current,
+      (result) => setData(result.data),
+      { returnDetailedScanResult: true }
+    );
+    qrScanner.start();
+    return () => qrScanner.destroy();
+  }, [camera, data]);
+
   useEffect(() => {
     QRcode.toString(
       data,
@@ -33,21 +49,47 @@ export default function Page() {
         version,
       },
       (err, qrc) => {
-        err ? console.log(err) : (ref.current.innerHTML = qrc);
-        data && !err && (ref.current.style.backgroundColor = 'transparent');
-        data && err && (ref.current.style.backgroundColor = 'red');
+        err ? console.log(err) : (qrRef.current.innerHTML = qrc);
+        !camera &&
+          data &&
+          !err &&
+          (qrRef.current.style.backgroundColor = 'transparent');
+        !camera && data && err && (qrRef.current.style.backgroundColor = 'red');
       }
     );
   }, [data]);
+
   return (
     <motion.section
       animate={{ opacity: [0, 1] }}
       className="flex justify-center items-center h-full w-full text-[1.55vh]"
     >
       <main className="aspect-[1/2] h-full bg-white text-black grid auto-rows-fr">
-        {data && <section ref={ref} className="grid p-[1.5rem]" />}
-        {!data && (
-          <section className="p-[1.5rem] grid grid-flow-row-dense w-full h-full">
+        {data && (
+          <motion.section
+            animate={{ opacity: [0, 1] }}
+            ref={qrRef}
+            className="grid p-[1.5rem]"
+          />
+        )}
+        {camera && !data && (
+          <motion.section
+            animate={{ opacity: [0, 1] }}
+            className="relative h-full w-full flex justify-center items-center p-[1.5rem] overflow-hidden"
+          >
+            <button
+              className="absolute z-50 h-full w-full transition hover:backdrop-blur hover:backdrop-grayscale"
+              onClick={() => setCamera(false)}
+            />
+            <video ref={cameraRef} className="h-full w-full object-cover" />
+          </motion.section>
+        )}
+
+        {!camera && !data && (
+          <motion.section
+            animate={{ opacity: [0, 1] }}
+            className="p-[1.5rem] grid grid-flow-row-dense w-full h-full"
+          >
             <header className="flex justify-between">
               <a
                 href="https://github.com/appleicat/qrc"
@@ -55,6 +97,12 @@ export default function Page() {
               >
                 QRc
               </a>
+              <button
+                className="px-[0.33rem] flex justify-end aspect-square transition hover:bg-black hover:text-white"
+                onClick={() => setCamera(true)}
+              >
+                scan
+              </button>
             </header>
             <div className="grid grid-flow-row-dense w-full h-full items-end">
               <div>version</div>
@@ -165,11 +213,12 @@ export default function Page() {
                 ))}
               </div>
             </div>
-          </section>
+          </motion.section>
         )}
         <section className="p-[1.5rem] border-t border-black">
           <textarea
             className="outline-none bg-transparent w-full h-full resize-none font-['JetBrains_Mono']"
+            value={data}
             onChange={(e) => setData(e.target.value)}
           />
         </section>
