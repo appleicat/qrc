@@ -232,7 +232,7 @@ export default function Page() {
         )}
         <section className="p-[1.5rem] border-t border-black">
           <textarea
-            className="outline-none bg-transparent w-full h-full resize-none font-['JetBrains_Mono']"
+            className="outline-none bg-transparent w-full h-full resize-none"
             value={data}
             onChange={(e) => setData(e.target.value)}
           />
