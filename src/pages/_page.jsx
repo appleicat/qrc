@@ -22,7 +22,7 @@ export default function Page() {
   const [data, setData] = useState('');
   const [camera, setCamera] = useState(false);
   const [errorCorrectionLevel, setErrorCorrectionLevel] = useState('L');
-  const [maskPattern, setMaskPattern] = useState(undefined);
+  // const [maskPattern, setMaskPattern] = useState(undefined);
   const [version, setVersion] = useState(undefined);
 
   useEffect(() => {
@@ -45,7 +45,7 @@ export default function Page() {
         margin: 0,
         color: { dark: '000000FF', light: '00000000' },
         errorCorrectionLevel,
-        maskPattern,
+        // maskPattern,
         version,
       },
       (err, qrc) => {
@@ -186,7 +186,7 @@ export default function Page() {
                 ))}
               </div>
             </div>
-            <div className="grid grid-flow-row-dense w-full h-full items-end">
+            {/* <div className="grid grid-flow-row-dense w-full h-full items-end">
               <div>mask pattern</div>
               <div className="grid grid-cols-8 w-full h-full">
                 <div className="col-span-full">
@@ -211,7 +211,7 @@ export default function Page() {
                   </Button>
                 ))}
               </div>
-            </div>
+            </div> */}
             <div className="grid grid-flow-row-dense w-full h-full items-end">
               <div>error correction level</div>
               <div className="grid grid-flow-col-dense w-full h-full">
