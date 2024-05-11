@@ -213,7 +213,7 @@ export default function Page() {
               </div>
             </div>
             <div className="grid grid-flow-row-dense w-full h-full items-end">
-              <div>error correction</div>
+              <div>error correction level</div>
               <div className="grid grid-flow-col-dense w-full h-full">
                 {['L', 'M', 'Q', 'H'].map((ecl, key) => (
                   <Button
