@@ -119,9 +119,6 @@ export default function Page() {
                 </button>
               </div>
             </header>
-            <div className="grid grid-flow-row-dense w-full h-full items-end" />
-            <div className="grid grid-flow-row-dense w-full h-full items-end" />
-            <div className="grid grid-flow-row-dense w-full h-full items-end" />
             <div className="grid grid-flow-row-dense w-full h-full items-end">
               <div>version</div>
               <div className="grid grid-cols-10 w-full h-full">
